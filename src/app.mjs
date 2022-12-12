@@ -32,7 +32,7 @@ const app = async () => {
       case command.startsWith(`${OS} --`): getOsInfo(command);
       break;
 
-      case command.startsWith(HASH): getHash(command);
+      case command.startsWith(HASH): await getHash(command);
       break;
 
       default: console.log(INVALID_INPUT);

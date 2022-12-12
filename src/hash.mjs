@@ -1,16 +1,20 @@
+import { promises as fs } from 'fs';
 import { OPERATION_ERROR } from "./constans.mjs";
 import { getPathFromCommand } from "./navigation.mjs";
-//import from 
-const getHash = (command) => {
-  const pathToFile = getPathFromCommand(command);
-  const { createHash } = await import('crypto');
-  try {
+const { createHash } = await import('crypto');
 
-    console.log('command', command);
+const getHash = async (command) => {
+  const pathToFile = getPathFromCommand(command);
+  try {
+    const textForHash = await fs.readFile(pathToFile);
+    const hash = createHash('sha256')
+      .update(textForHash)
+      .digest('hex');
+    console.log(hash);
 
   } catch (error) {
-    console.log(OPERATION_ERROR, error);
-  }
-}
+    console.log(OPERATION_ERROR, error.message);
+  };
+};
 
 export default getHash;
