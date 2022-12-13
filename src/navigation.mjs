@@ -1,21 +1,53 @@
 import path from 'path';
 import fs from 'fs/promises';
+import { INVALID_INPUT, IN_ROOT_ALERT, OPERATION_ERROR } from './constans.mjs';
+
+const goToUp = (directory) => {
+  const countOfSeparators = directory.split('').filter((char) => char === path.sep).length;
+  const indexOfRootSeparator = directory.indexOf(path.sep);
+  let newDirectory = directory;
+  if (countOfSeparators > 1) {
+    newDirectory = directory.slice(0, directory.lastIndexOf(path.sep));
+  } else if (directory[indexOfRootSeparator + 1]) {
+    newDirectory = directory.slice(0, directory.lastIndexOf(path.sep) +1);
+  } else {
+       console.log(IN_ROOT_ALERT);
+    };
+  return newDirectory;
+};
+
+const goToFolder = async (command) => {
+  const pathDestination = getPathFromCommand(command);
+  try {
+    await fs.readdir(pathDestination);
+    return pathDestination;
+  } catch (error) {
+    console.log(INVALID_INPUT, error.message)
+  };
+};
 
 const readFilesFromDirectory = async (directory) => {
-  const files = await fs.readdir(directory);
-  const filesInDirectory = await Promise.all(files.map(async (file) => {
-    const name = path.basename(file);
-    const stats = await fs.stat(path.join(directory, file));
-    const type = stats.isFile() ? 'file' : 'directory';
-
-    return {
-      name: name,
-      type: type,
-    }
-  }));
+  try {
+    const files = await fs.readdir(directory);
+    const filesInDirectory = await Promise.all(files.map(async (file) => {
+      const name = path.basename(file);
+      let type = '???';
+      try {
+        const stats = await fs.stat(path.join(directory, file));
+        type = stats.isFile() ? 'file' : 'directory';
+        } catch (error) {   
+        } finally { 
+          return {
+            name: name,
+            type: type,
+          };
+         };
+    }));
   console.table(sortFilesDisplay(filesInDirectory));
-
-}
+  } catch (error) {
+    console.log(OPERATION_ERROR, error.message);
+  };
+};
 
 const sortFilesDisplay = (files) => {
   return files.sort((a, b) => {
@@ -34,9 +66,20 @@ const printCurrentDirectory = (currentDirecory) => {
   console.log(`You are currently in ${currentDirecory}`);
 };
 
-const getPathFromCommand = (command) => command.slice(command.indexOf(' ')).trim();
+const getPathFromCommand = (command) => {
+  let pathToFile = command.slice(command.indexOf(' ')).trim();
+  if (pathToFile.startsWith('\'') || (pathToFile.startsWith('"'))) {
+    pathToFile = pathToFile.slice(1);
+  };
+  if (pathToFile.endsWith('\'') || (pathToFile.endsWith('"'))) {
+    pathToFile = pathToFile.slice(0, -1);
+  }
+ return pathToFile;
+}
 
-export { 
+export {
+  goToUp,
+  goToFolder,
   readFilesFromDirectory,
   printCurrentDirectory,
   getPathFromCommand,
