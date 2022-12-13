@@ -7,8 +7,6 @@ import { pipeline } from 'stream/promises';
 import { OPERATION_ERROR } from './constans.mjs';
 import { getPathFromCommand } from './navigation.mjs';
   // copy() {}
-  // read() {}
-  // rename() {}
   // move() {}
 const addFile = async (command, directory) => {
   const fileName = getPathFromCommand(command);
@@ -35,6 +33,10 @@ const readFile = async (command) => {
   };
 };
 
+const renameFile = (command) => {
+
+}
+
  const deleteFile = async (command) => {
   const pathToFile = getPathFromCommand(command);
   try {
@@ -48,5 +50,6 @@ const readFile = async (command) => {
 
 export {
   addFile,
+  renameFile,
   readFile,
   deleteFile }

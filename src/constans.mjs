@@ -19,3 +19,5 @@ export const RM = 'rm';
 export const INVALID_INPUT = 'Invalid input: please, write correct command!';
 export const OPERATION_ERROR = 'Operation failed';
 export const IN_ROOT_ALERT = 'You are in the root folder';
+
+export const ARG_PREFIX = '--username=';
