@@ -14,7 +14,10 @@ export const HOMEDIR = 'homedir';
 
 export const ADD = 'add';
 export const CAT = 'cat';
+export const RN = 'rn';
 export const RM = 'rm';
+export const CP = 'cp';
+export const MV = 'mv';
 
 export const INVALID_INPUT = 'Invalid input: please, write correct command!';
 export const OPERATION_ERROR = 'Operation failed';

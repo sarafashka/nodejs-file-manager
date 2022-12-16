@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 import { INVALID_INPUT, IN_ROOT_ALERT, OPERATION_ERROR } from './constans.mjs';
+import { getPathFromCommand } from './utils.mjs';
 
 const goToUp = (directory) => {
   const countOfSeparators = directory.split('').filter((char) => char === path.sep).length;
@@ -62,25 +63,8 @@ const sortFilesDisplay = (files) => {
   });
 };
 
-const printCurrentDirectory = (currentDirecory) => {
-  console.log(`You are currently in ${currentDirecory}`);
-};
-
-const getPathFromCommand = (command) => {
-  let pathToFile = command.slice(command.indexOf(' ')).trim();
-  if (pathToFile.startsWith('\'') || (pathToFile.startsWith('"'))) {
-    pathToFile = pathToFile.slice(1);
-  };
-  if (pathToFile.endsWith('\'') || (pathToFile.endsWith('"'))) {
-    pathToFile = pathToFile.slice(0, -1);
-  }
- return pathToFile;
-}
-
 export {
   goToUp,
   goToFolder,
   readFilesFromDirectory,
-  printCurrentDirectory,
-  getPathFromCommand,
 };

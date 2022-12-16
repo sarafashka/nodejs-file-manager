@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import { OPERATION_ERROR } from "./constans.mjs";
-import { getPathFromCommand } from "./navigation.mjs";
+import { getPathFromCommand } from "./utils.mjs";
 const { createHash } = await import('crypto');
 
 const getHash = async (command) => {

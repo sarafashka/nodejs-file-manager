@@ -1,6 +1,6 @@
 import { ARG_PREFIX } from "./constans.mjs";
 import {  homedir } from 'os';
-import { printCurrentDirectory } from "./navigation.mjs";
+import { printCurrentDirectory } from "./utils.mjs";
 
 const greeting = () => {
   let initDirectory = homedir();
