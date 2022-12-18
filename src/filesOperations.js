@@ -5,6 +5,7 @@ import path from 'path';
 import { pipeline } from 'stream/promises';
 import { OPERATION_ERROR } from './constans.mjs';
 import { getPathesFromCommand } from './utils.mjs';
+import { stdout } from 'process';
 
 const addFile = async (command, directory) => {
   const fileName = getPathesFromCommand(command)[0];
@@ -20,9 +21,11 @@ const addFile = async (command, directory) => {
 const readFile = async (command) => {
   const pathToFile = getPathesFromCommand(command)[0];
   try {
+    let data = '';
     const input = fs.createReadStream(pathToFile, { encoding: 'utf-8' });
-    const output = process.stdout;
-    await pipeline(input, output);
+    await pipeline(input, process.stdout);
+    // input.on('data', (chunk) => { data += chunk});
+    // input.on('end', () => { console.log(data)});
 
     //console.log('you are')
    // await new Promise(stream.pipe(process.stdout));
@@ -67,7 +70,8 @@ const moveFile = async (command) => {
 };
 
 const deleteFile = async (command) => {
-  const pathToFile = getPathesFromCommand(command)[0];
+  const pathToFile = getPathesFromCommand(command);
+  console.log('path', pathToFile)
   try {
     await rm(pathToFile);
     console.log('File deleted');

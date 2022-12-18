@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 import { INVALID_INPUT, IN_ROOT_ALERT, OPERATION_ERROR } from './constans.mjs';
-import { getPathFromCommand } from './utils.mjs';
+import { getPathesFromCommand } from './utils.mjs';
 
 const goToUp = (directory) => {
   const countOfSeparators = directory.split('').filter((char) => char === path.sep).length;
@@ -18,7 +18,7 @@ const goToUp = (directory) => {
 };
 
 const goToFolder = async (command) => {
-  const pathDestination = getPathFromCommand(command);
+  const pathDestination = getPathesFromCommand(command)[0];
   try {
     await fs.readdir(pathDestination);
     return pathDestination;
