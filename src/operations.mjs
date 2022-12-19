@@ -37,7 +37,7 @@ const runOperation = async (inputData) => {
     case command.startsWith(DECOMPRESS): await decompress(command);
     break;
 
-    case command.startsWith(CAT): await readFile(command);
+    case command.startsWith(CAT): await readFile(command, userDirectory);
     break;
     
     case command.startsWith(RM): await deleteFile(command);

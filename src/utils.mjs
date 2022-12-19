@@ -7,12 +7,12 @@ export const printCurrentDirectory = (currentDirecory) => {
 
 export const sayGreeting = (username) => `Welcome to the File Manager, ${username}!`; 
 
-export const sayGoodbye = (username) => `Thank you for using File Manager, ${username}, goodbye!`;
+export const sayGoodbye = (username) => `\nThank you for using File Manager, ${username}, goodbye!`;
 
 export const getPathesFromCommand = (command) => {
   const pathes = command.slice(command.indexOf(' ')).trim();
   const countOfSpaces = [...pathes].filter((item)  => item === ' ').length;
-  if (countOfSpaces > 1) {
+  if (countOfSpaces > 1 && !(pathes.startsWith('"') || pathes.startsWith('\''))) {
     console.log(INVALID_INPUT, "You should enter path with quotes");
     return error;
   } else {
@@ -30,10 +30,10 @@ export const getPathesFromCommand = (command) => {
 
     const pathesFormatted = pathesSeparated.map((pathToFile) => {
       if (pathToFile.startsWith('\'') || (pathToFile.startsWith('"'))) {
-        pathToFile = pathToFile.slice(1);
+        pathToFile = pathToFile.trim().slice(1);
       };
       if (pathToFile.endsWith('\'') || (pathToFile.endsWith('"'))) {
-        pathToFile = pathToFile.slice(0, -1);
+        pathToFile = pathToFile.trim().slice(0, -1);
       }
      return pathToFile;
     });
