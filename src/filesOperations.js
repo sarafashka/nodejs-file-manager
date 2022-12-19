@@ -5,27 +5,29 @@ import path from 'path';
 import { pipeline } from 'stream/promises';
 import { OPERATION_ERROR } from './constans.mjs';
 import { getPathesFromCommand } from './utils.mjs';
-import { stdout } from 'process';
 
 const addFile = async (command, directory) => {
-  const fileName = getPathesFromCommand(command)[0];
-  const pathToFile = path.join(directory, fileName);
   try {
-      await open(pathToFile, 'wx');
-      console.log('File created');
+    const fileName = getPathesFromCommand(command)[0];
+    const pathToFile = path.join(directory, fileName);
+
+    await open(pathToFile, 'wx');
+    console.log('File created');
+
   } catch (error) {
-      console.log(OPERATION_ERROR, error.message)
+    console.log(OPERATION_ERROR, error.message)
   };
 };
 
 const readFile = async (command) => {
-  const pathToFile = getPathesFromCommand(command)[0];
   try {
+    const pathToFile = getPathesFromCommand(command)[0];
     let data = '';
     const input = fs.createReadStream(pathToFile, { encoding: 'utf-8' });
-    await pipeline(input, process.stdout);
-    // input.on('data', (chunk) => { data += chunk});
-    // input.on('end', () => { console.log(data)});
+    //await pipeline(input, process.stdout);
+   
+  input.on('data', (chunk) => { data += chunk});
+  input.on('end', () => { console.log(data)});
 
     //console.log('you are')
    // await new Promise(stream.pipe(process.stdout));
@@ -37,31 +39,32 @@ const readFile = async (command) => {
 };
 
 const renameFile = async (command) => {
-  const pathes = getPathesFromCommand(command);
-  const [pathToFile, newName] = pathes;
-  const newPathToFile = path.join(path.dirname(pathToFile), newName);
-  if (await checkAccessFile(newPathToFile)) {
-    try {
+  try {
+    const pathes = getPathesFromCommand(command);
+    const [pathToFile, newName] = pathes;
+    const newPathToFile = path.join(path.dirname(pathToFile), newName);
+    if (await checkAccessFile(newPathToFile)) {
       await rename(pathToFile, newPathToFile);
       console.log('File renamed');
-    } catch (error) {
+    } else console.log('File exists. Enter another name'); 
+  } catch (error) {
       console.log(OPERATION_ERROR, error.message);
-    }
-  } else console.log('File exists. Enter another name');
+  }
 };
 
 const copyFile = async (command) => {
-  const pathes = getPathesFromCommand(command);
-  const [pathToFile, pathToNewDirectory] = pathes;
-  const pathToNewFile = path.join(pathToNewDirectory, path.basename(pathToFile));
-    try {
-        const input = fs.createReadStream(pathToFile, { encoding: 'utf-8' });
-        const output= fs.createWriteStream(pathToNewFile);
-        await pipeline(input, output);
-        console.log('File copied');
-      } catch (error) {
-          console.log(OPERATION_ERROR, error.message)
-      };
+  try {
+      const pathes = getPathesFromCommand(command);
+      const [pathToFile, pathToNewDirectory] = pathes;
+      const pathToNewFile = path.join(pathToNewDirectory, path.basename(pathToFile));
+
+      const input = fs.createReadStream(pathToFile, { encoding: 'utf-8' });
+      const output= fs.createWriteStream(pathToNewFile);
+      await pipeline(input, output);
+      console.log('File copied');
+  } catch (error) {
+      console.log(OPERATION_ERROR, error.message)
+  };
 };
 
 const moveFile = async (command) => {
@@ -70,9 +73,10 @@ const moveFile = async (command) => {
 };
 
 const deleteFile = async (command) => {
-  const pathToFile = getPathesFromCommand(command);
-  console.log('path', pathToFile)
   try {
+    const pathToFile = getPathesFromCommand(command);
+    console.log('path', pathToFile)
+
     await rm(pathToFile);
     console.log('File deleted');
   } catch (error) {

@@ -19,6 +19,8 @@ export const RM = 'rm';
 export const CP = 'cp';
 export const MV = 'mv';
 
+export const EXIT = '.exit';
+
 export const INVALID_INPUT = 'Invalid input: please, write correct command!';
 export const OPERATION_ERROR = 'Operation failed';
 export const IN_ROOT_ALERT = 'You are in the root folder';

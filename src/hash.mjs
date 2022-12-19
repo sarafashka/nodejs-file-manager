@@ -4,9 +4,10 @@ import { getPathesFromCommand } from "./utils.mjs";
 const { createHash } = await import('crypto');
 
 const getHash = async (command) => {
-  const pathToFile = getPathesFromCommand(command)[0];
   try {
+    const pathToFile = getPathesFromCommand(command)[0];
     const textForHash = await fs.readFile(pathToFile);
+    
     const hash = createHash('sha256')
       .update(textForHash)
       .digest('hex');

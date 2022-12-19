@@ -1,5 +1,5 @@
 import {  EOL, homedir } from 'os';
-import { INVALID_INPUT, LS, OS, HASH, COMPRESS, DECOMPRESS, UP, CD, RM, ADD, CAT, RN, CP, MV } from './constans.mjs';
+import { INVALID_INPUT, LS, OS, HASH, COMPRESS, DECOMPRESS, UP, CD, RM, ADD, CAT, RN, CP, MV, EXIT } from './constans.mjs';
 import { readFilesFromDirectory, goToUp, goToFolder } from './navigation.mjs';
 import { getOsInfo } from './os.mjs';
 import getHash from './hash.mjs';
@@ -10,10 +10,12 @@ import { printCurrentDirectory } from './utils.mjs';
 let userDirectory = homedir();
 
 const runOperation = async (inputData) => {
-
   const command = inputData.endsWith(EOL) ? inputData.slice(0, -1).trim() : inputData.trim();
 
   switch (true) {
+    case command === EXIT: process.exit();
+    break;
+
     case command === UP: userDirectory = goToUp(userDirectory);
     break;
 

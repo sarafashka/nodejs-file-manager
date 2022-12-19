@@ -1,16 +1,9 @@
-import { ARG_PREFIX } from "./constans.mjs";
 import {  homedir } from 'os';
-import { printCurrentDirectory } from "./utils.mjs";
+import { printCurrentDirectory, sayGreeting } from "./utils.mjs";
 
-const greeting = () => {
-  let initDirectory = homedir();
-  const receivedArg = process.argv.slice(2)[0];
-  const userName = receivedArg.startsWith(ARG_PREFIX ) ? receivedArg.slice(ARG_PREFIX.length): null;
-
-  const greeting = `Welcome to the File Manager, ${userName}!`;
-  const goodbye = `Thank you for using File Manager, ${userName}, goodbye!`;
-
-  process.stdout.write(`${greeting} \n`);
+const greeting = (username) => {
+  const initDirectory = homedir();
+  process.stdout.write(`${sayGreeting(username)} \n`);
   printCurrentDirectory(initDirectory);
   
 }
