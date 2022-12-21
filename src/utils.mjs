@@ -48,30 +48,9 @@ export const getPathesFromCommand = (command, directory) => {
       if (pathToFile.endsWith('\'') || (pathToFile.endsWith('"'))) {
         pathToFile = pathToFile.trim().slice(0, -1);
       }
-      if (pathToFile.startsWith('./')) {
-       //const userDirectory = '/Users/natalyastepanova';
-        pathToFile = path.resolve(directory, pathToFile);
-      }
-     return pathToFile;
+      pathToFile = path.resolve(directory, path.normalize(pathToFile));
+      return pathToFile;
     });
     return pathesFormatted;
   }
 };
-
-// const getAbsolutePath = async(paths) => {
-//   return paths.map(async(pathFromCommand) => {
-//     console.log(pathFromCommand);
-//      if (pathFromCommand.startsWith('./')) {
-//        const userDirectory = '/Users/natalyastepanova';
-//        const absolutePath = path.resolve(userDirectory, path);
-//        return absolutePath;
-//      //   console.log('absolute', absolutePath)
-//      //   if (await checkAccess(absolutePath)) {
-//      //     return absolutePath;
-//      //   } else {
-//      //     return null;
-//      //   }
-//      //  } else return pathFromCommand;
-//      }
-//    });
-//  }
