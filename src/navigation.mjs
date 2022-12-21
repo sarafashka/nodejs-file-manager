@@ -17,9 +17,9 @@ const goToUp = (directory) => {
   return newDirectory;
 };
 
-const goToFolder = async (command) => {
+const goToFolder = async (command, directory) => {
   try {
-    const pathDestination = getPathesFromCommand(command)[0];
+    const pathDestination = getPathesFromCommand(command, directory)[0];
     await fs.readdir(pathDestination);
     return pathDestination;
   } catch (error) {

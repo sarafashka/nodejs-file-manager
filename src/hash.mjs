@@ -3,9 +3,9 @@ import { OPERATION_ERROR } from "./constans.mjs";
 import { getPathesFromCommand } from "./utils.mjs";
 const { createHash } = await import('crypto');
 
-const getHash = async (command) => {
+const getHash = async (command, directory) => {
   try {
-    const pathToFile = getPathesFromCommand(command)[0];
+    const pathToFile = getPathesFromCommand(command, directory)[0];
     const textForHash = await fs.readFile(pathToFile);
     
     const hash = createHash('sha256')

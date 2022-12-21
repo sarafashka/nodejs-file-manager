@@ -4,9 +4,9 @@ import zlib from 'zlib';
 import { pipeline } from 'stream/promises';
 import { INVALID_INPUT, OPERATION_ERROR } from "./constans.mjs";
 
-const compress = async(command) => {
+const compress = async(command, directory) => {
   try {
-    const [pathToFile, pathToDestination] = getPathesFromCommand(command);
+    const [pathToFile, pathToDestination] = getPathesFromCommand(command, directory);
     if (!pathToDestination.includes('.br')) {
       console.log(INVALID_INPUT, 'Path to destination should exist path to file with extension ".br"');
     } else {
@@ -24,9 +24,9 @@ const compress = async(command) => {
   };
 };
 
-const decompress = async(command) => {
+const decompress = async(command, directory) => {
   try {
-    const [pathToFile, pathToDestination] = getPathesFromCommand(command);
+    const [pathToFile, pathToDestination] = getPathesFromCommand(command, directory);
     if (!pathToDestination.includes('.')) {
       console.log(INVALID_INPUT, 'Path to destination should exist path to file');
     } else {
